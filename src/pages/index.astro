@@ -1,0 +1,30 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import PostCard from '../components/PostCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('posts', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+---
+
+<BaseLayout title="홈" description="joo-log - 개인 기술 블로그">
+  <section class="mb-12">
+    <h1 class="text-4xl font-bold mb-4">joo-log</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">
+      개발과 기술에 대한 이야기를 기록합니다.
+    </p>
+  </section>
+
+  <section>
+    <h2 class="text-2xl font-bold mb-6">최근 게시글</h2>
+    {posts.length === 0 ? (
+      <p class="text-gray-500 dark:text-gray-400">아직 게시글이 없습니다.</p>
+    ) : (
+      <div class="grid gap-6">
+        {posts.map((post) => (
+          <PostCard post={post} />
+        ))}
+      </div>
+    )}
+  </section>
+</BaseLayout>

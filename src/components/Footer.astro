@@ -1,0 +1,18 @@
+---
+const currentYear = new Date().getFullYear();
+---
+
+<footer class="border-t border-gray-200 dark:border-gray-800 py-8 mt-auto">
+  <div class="max-w-4xl mx-auto px-4">
+    <div class="flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-gray-500 dark:text-gray-400">
+      <p>&copy; {currentYear} joo-log. All rights reserved.</p>
+      <div class="flex items-center gap-4">
+        <a href="https://github.com/heyjoo" target="_blank" rel="noopener noreferrer" class="hover:text-primary-500">
+          GitHub
+        </a>
+        <span>·</span>
+        <span>Built with <a href="https://astro.build" target="_blank" rel="noopener noreferrer" class="hover:text-primary-500">Astro</a></span>
+      </div>
+    </div>
+  </div>
+</footer>

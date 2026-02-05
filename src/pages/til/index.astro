@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const tils = (await getCollection('til'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+// 월별 그룹화
+const tilsByMonth = tils.reduce((acc, til) => {
+  const monthKey = til.data.date.toLocaleDateString('ko-KR', {
+    year: 'numeric',
+    month: 'long',
+  });
+  if (!acc[monthKey]) acc[monthKey] = [];
+  acc[monthKey].push(til);
+  return acc;
+}, {} as Record<string, typeof tils>);
+---
+
+<BaseLayout title="TIL" description="Today I Learned - 매일 배운 것들을 기록합니다">
+  <section class="mb-8">
+    <h1 class="text-4xl font-bold mb-4">TIL</h1>
+    <p class="text-lg text-gray-600 dark:text-gray-400">
+      Today I Learned - 매일 배운 것들을 가볍게 기록합니다.
+    </p>
+  </section>
+
+  {Object.keys(tilsByMonth).length === 0 ? (
+    <p class="text-gray-500 dark:text-gray-400">아직 TIL이 없습니다.</p>
+  ) : (
+    <div class="space-y-8">
+      {Object.entries(tilsByMonth).map(([month, items]) => (
+        <section>
+          <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-4">{month}</h2>
+          <ul class="space-y-3">
+            {items.map((til) => (
+              <li>
+                <a
+                  href={`/til/${til.slug}`}
+                  class="group flex items-baseline gap-4 hover:no-underline"
+                >
+                  <time
+                    class="text-sm text-gray-400 dark:text-gray-500 shrink-0"
+                    datetime={til.data.date.toISOString()}
+                  >
+                    {til.data.date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' })}
+                  </time>
+                  <span class="text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
+                    {til.data.title}
+                  </span>
+                  {til.data.tags.length > 0 && (
+                    <span class="text-xs text-gray-400 dark:text-gray-500">
+                      {til.data.tags.map(tag => `#${tag}`).join(' ')}
+                    </span>
+                  )}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </section>
+      ))}
+    </div>
+  )}
+</BaseLayout>
