@@ -3,6 +3,8 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import '../styles/global.css';
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 interface Props {
   title: string;
   description?: string;
@@ -17,7 +19,7 @@ const { title, description = 'joo-log - 개인 기술 블로그' } = Astro.props
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <title>{title} | joo-log</title>
     <script is:inline>
       const theme = (() => {

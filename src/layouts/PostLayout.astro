@@ -2,6 +2,8 @@
 import BaseLayout from './BaseLayout.astro';
 import type { CollectionEntry } from 'astro:content';
 
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+
 interface Props {
   post: CollectionEntry<'posts'>;
 }
@@ -39,7 +41,7 @@ const formattedDate = date.toLocaleDateString('ko-KR', {
     </div>
   </article>
   <nav class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-    <a href="/" class="text-primary-600 dark:text-primary-400 hover:underline">
+    <a href={`${base}/`} class="text-primary-600 dark:text-primary-400 hover:underline">
       &larr; 목록으로 돌아가기
     </a>
   </nav>
