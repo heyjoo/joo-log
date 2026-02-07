@@ -50,11 +50,6 @@ const tilsByMonth = tils.reduce((acc, til) => {
                   <span class="text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {til.data.title}
                   </span>
-                  {til.data.tags.length > 0 && (
-                    <span class="text-xs text-gray-400 dark:text-gray-500">
-                      {til.data.tags.map(tag => `#${tag}`).join(' ')}
-                    </span>
-                  )}
                 </a>
               </li>
             ))}

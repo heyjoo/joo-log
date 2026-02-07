@@ -13,7 +13,7 @@ export async function getStaticPaths() {
 }
 
 const { til } = Astro.props;
-const { title, date, tags } = til.data;
+const { title, date } = til.data;
 const { Content } = await render(til);
 
 const formattedDate = date.toLocaleDateString('ko-KR', {
@@ -33,13 +33,6 @@ const formattedDate = date.toLocaleDateString('ko-KR', {
         <time datetime={date.toISOString()}>{formattedDate}</time>
       </div>
       <h1 class="text-3xl font-bold mb-3">{title}</h1>
-      {tags.length > 0 && (
-        <div class="flex flex-wrap gap-2">
-          {tags.map((tag) => (
-            <span class="text-sm text-gray-500 dark:text-gray-400">#{tag}</span>
-          ))}
-        </div>
-      )}
     </header>
     <div class="prose">
       <Content />
