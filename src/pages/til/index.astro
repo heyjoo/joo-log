@@ -7,6 +7,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const tils = (await getCollection('til'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
+// 전체 태그 수집 (사용 빈도순 정렬)
+const tagCount = new Map<string, number>();
+tils.forEach((til) => {
+  til.data.tags.forEach((tag) => {
+    tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
+  });
+});
+const allTags = [...tagCount.entries()]
+  .sort((a, b) => b[1] - a[1])
+  .map(([tag]) => tag);
+
 // 월별 그룹화
 const tilsByMonth = tils.reduce((acc, til) => {
   const monthKey = til.data.date.toLocaleDateString('ko-KR', {
@@ -27,16 +38,35 @@ const tilsByMonth = tils.reduce((acc, til) => {
     </p>
   </section>
 
+  {allTags.length > 0 && (
+    <div class="flex flex-wrap gap-2 mb-8" id="tag-filters">
+      <button
+        class="tag-btn active px-2 py-1 rounded-md text-xs font-medium transition-colors bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300"
+        data-tag=""
+      >
+        전체
+      </button>
+      {allTags.map((tag) => (
+        <button
+          class="tag-btn px-2 py-1 rounded-md text-xs font-medium transition-colors bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-400"
+          data-tag={tag}
+        >
+          #{tag}
+        </button>
+      ))}
+    </div>
+  )}
+
   {Object.keys(tilsByMonth).length === 0 ? (
     <p class="text-gray-500 dark:text-gray-400">아직 TIL이 없습니다.</p>
   ) : (
-    <div class="space-y-8">
+    <div class="space-y-8" id="til-list">
       {Object.entries(tilsByMonth).map(([month, items]) => (
-        <section>
+        <section class="til-month-group">
           <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-4">{month}</h2>
           <ul class="space-y-3">
             {items.map((til) => (
-              <li>
+              <li data-tags={til.data.tags.join(',')}>
                 <a
                   href={`${base}/til/${til.slug}`}
                   class="group flex items-baseline gap-4 hover:no-underline"
@@ -50,6 +80,15 @@ const tilsByMonth = tils.reduce((acc, til) => {
                   <span class="text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
                     {til.data.title}
                   </span>
+                  {til.data.tags.length > 0 && (
+                    <span class="flex gap-1 shrink-0">
+                      {til.data.tags.map((tag) => (
+                        <span class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-[10px] text-gray-500 dark:text-gray-500">
+                          {tag}
+                        </span>
+                      ))}
+                    </span>
+                  )}
                 </a>
               </li>
             ))}
@@ -59,3 +98,39 @@ const tilsByMonth = tils.reduce((acc, til) => {
     </div>
   )}
 </BaseLayout>
+
+<script>
+  const buttons = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
+  const items = document.querySelectorAll<HTMLLIElement>('#til-list li[data-tags]');
+  const groups = document.querySelectorAll<HTMLElement>('.til-month-group');
+
+  const activeClass = ['bg-primary-100', 'dark:bg-primary-900', 'text-primary-700', 'dark:text-primary-300'];
+  const inactiveClass = ['bg-gray-100', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400'];
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const selectedTag = btn.dataset.tag || '';
+
+      buttons.forEach((b) => {
+        b.classList.remove('active', ...activeClass);
+        b.classList.add(...inactiveClass);
+      });
+      btn.classList.add('active', ...activeClass);
+      btn.classList.remove(...inactiveClass);
+
+      items.forEach((item) => {
+        if (!selectedTag) {
+          item.style.display = '';
+          return;
+        }
+        const tags = (item.dataset.tags || '').split(',').filter(Boolean);
+        item.style.display = tags.includes(selectedTag) ? '' : 'none';
+      });
+
+      groups.forEach((group) => {
+        const visibleItems = group.querySelectorAll('li:not([style*="display: none"])');
+        group.style.display = visibleItems.length > 0 ? '' : 'none';
+      });
+    });
+  });
+</script>
