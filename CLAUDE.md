@@ -2,6 +2,10 @@
 
 This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
+## Package Manager
+
+Use **pnpm** (not npm or yarn). Node.js 20 required.
+
 ## Build & Development Commands
 
 ```bash
@@ -41,10 +45,17 @@ Two collections defined in `src/content/config.ts`:
 
 ### Key Patterns
 
-- **Dark mode**: CSS class-based (`dark` on HTML), persisted to localStorage
+- **Dark mode**: CSS class-based (`dark` on HTML), persisted to localStorage; inline script in BaseLayout detects system preference on first load
 - **Syntax highlighting**: Shiki with `github-dark` theme (server-side)
 - **Path alias**: `@/*` maps to `src/*`
 - **Fonts**: Pretendard (sans), JetBrains Mono (mono)
+- **Base path**: `/joo-log` in production, `/` in dev (set in `astro.config.mjs`)
+- **Drafts**: Posts with `draft: true` are excluded from the home page listing
+- **TIL filtering**: Client-side tag filtering using vanilla JS on `/til`
+
+### Commit Convention
+
+Conventional commits enforced via Husky + commitlint (`commitlint.config.js`).
 
 ### Obsidian Import Script
 
@@ -52,3 +63,7 @@ Two collections defined in `src/content/config.ts`:
 - Parses YAML frontmatter
 - Converts `![[image.png]]` to standard markdown
 - Copies images to `public/images/posts/<slug>/`
+
+## Claude Code 관련 질문 응답 방침
+
+claude-code-guide는 틀린 답을 낼 때가 있다. 사용자가 추가 질문을 하면 Claude Code 공식 문서 https://code.claude.com/docs/en/overview 에서 md 파일을 curl로 참조해서 답해. 그 후에는 AskUserQuestion으로 퀴즈를 내서 직접 따라하게 안내해.
