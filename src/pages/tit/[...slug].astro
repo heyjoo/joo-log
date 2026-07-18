@@ -5,16 +5,16 @@ import { getCollection, render } from 'astro:content';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
 export async function getStaticPaths() {
-  const tils = await getCollection('til');
-  return tils.map((til) => ({
-    params: { slug: til.slug },
-    props: { til },
+  const tits = await getCollection('tit');
+  return tits.map((tit) => ({
+    params: { slug: tit.slug },
+    props: { tit },
   }));
 }
 
-const { til } = Astro.props;
-const { title, date, tags } = til.data;
-const { Content } = await render(til);
+const { tit } = Astro.props;
+const { title, date, tags } = tit.data;
+const { Content } = await render(tit);
 
 const formattedDate = date.toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -23,12 +23,12 @@ const formattedDate = date.toLocaleDateString('ko-KR', {
 });
 ---
 
-<BaseLayout title={title} description={`TIL: ${title}`}>
+<BaseLayout title={title} description={`TIT: ${title}`}>
   <article>
     <header class="mb-8">
       <div class="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 mb-2">
         <span class="px-2 py-0.5 bg-primary-100 dark:bg-primary-900 text-primary-700 dark:text-primary-300 rounded text-xs font-medium">
-          TIL
+          TIT
         </span>
         <time datetime={date.toISOString()}>{formattedDate}</time>
       </div>
@@ -48,8 +48,8 @@ const formattedDate = date.toLocaleDateString('ko-KR', {
     </div>
   </article>
   <nav class="mt-12 pt-8 border-t border-gray-200 dark:border-gray-700">
-    <a href={`${base}/til`} class="text-primary-600 dark:text-primary-400 hover:underline">
-      &larr; TIL 목록으로
+    <a href={`${base}/tit`} class="text-primary-600 dark:text-primary-400 hover:underline">
+      &larr; TIT 목록으로
     </a>
   </nav>
 </BaseLayout>

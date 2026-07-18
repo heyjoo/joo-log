@@ -12,7 +12,7 @@ const posts = defineCollection({
   }),
 });
 
-const til = defineCollection({
+const tit = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -21,4 +21,4 @@ const til = defineCollection({
   }),
 });
 
-export const collections = { posts, til };
+export const collections = { posts, tit };

@@ -24,7 +24,7 @@ pnpm import:obsidian <vault-path> <folder-name>  # Import from Obsidian vault
 Two collections defined in `src/content/config.ts`:
 
 - **posts** (`src/content/posts/`): Blog posts with title, description, date, tags, draft, image
-- **til** (`src/content/til/`): "Today I Learned" entries with title, date, tags (lighter schema)
+- **tit** (`src/content/tit/`): "Today I Thought" entries with title, date, tags (lighter schema)
 
 ### Routing
 
@@ -32,8 +32,8 @@ Two collections defined in `src/content/config.ts`:
 |-------|------|-------------|
 | `/` | `pages/index.astro` | Recent posts grid |
 | `/posts/[slug]` | `pages/posts/[...slug].astro` | Post detail |
-| `/til` | `pages/til/index.astro` | TIL archive grouped by month |
-| `/til/[slug]` | `pages/til/[...slug].astro` | TIL detail |
+| `/tit` | `pages/tit/index.astro` | TIT archive grouped by month |
+| `/tit/[slug]` | `pages/tit/[...slug].astro` | TIT detail |
 | `/about` | `pages/about.astro` | About page |
 
 ### Layout Hierarchy
@@ -51,7 +51,7 @@ Two collections defined in `src/content/config.ts`:
 - **Fonts**: Pretendard (sans), JetBrains Mono (mono)
 - **Base path**: `/joo-log` in production, `/` in dev (set in `astro.config.mjs`)
 - **Drafts**: Posts with `draft: true` are excluded from the home page listing
-- **TIL filtering**: Client-side tag filtering using vanilla JS on `/til`
+- **TIT filtering**: Client-side tag filtering using vanilla JS on `/tit`
 
 ### Commit Convention
 

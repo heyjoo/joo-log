@@ -18,7 +18,7 @@ pnpm dev
 ## 콘텐츠 작성
 
 - 블로그 포스트: `src/content/posts/`
-- TIL: `src/content/til/`
+- TIT: `src/content/tit/`
 
 ### Obsidian에서 가져오기
 

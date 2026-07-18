@@ -4,13 +4,13 @@ import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
-const tils = (await getCollection('til'))
+const tits = (await getCollection('tit'))
   .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 // 전체 태그 수집 (사용 빈도순 정렬)
 const tagCount = new Map<string, number>();
-tils.forEach((til) => {
-  til.data.tags.forEach((tag) => {
+tits.forEach((tit) => {
+  tit.data.tags.forEach((tag) => {
     tagCount.set(tag, (tagCount.get(tag) || 0) + 1);
   });
 });
@@ -19,22 +19,22 @@ const allTags = [...tagCount.entries()]
   .map(([tag]) => tag);
 
 // 월별 그룹화
-const tilsByMonth = tils.reduce((acc, til) => {
-  const monthKey = til.data.date.toLocaleDateString('ko-KR', {
+const titsByMonth = tits.reduce((acc, tit) => {
+  const monthKey = tit.data.date.toLocaleDateString('ko-KR', {
     year: 'numeric',
     month: 'long',
   });
   if (!acc[monthKey]) acc[monthKey] = [];
-  acc[monthKey].push(til);
+  acc[monthKey].push(tit);
   return acc;
-}, {} as Record<string, typeof tils>);
+}, {} as Record<string, typeof tits>);
 ---
 
-<BaseLayout title="TIL" description="Today I Learned - 매일 배운 것들을 기록합니다">
+<BaseLayout title="TIT" description="Today I Thought - 매일 생각한 것들을 기록합니다">
   <section class="mb-8">
-    <h1 class="text-4xl font-bold mb-4">TIL</h1>
+    <h1 class="text-4xl font-bold mb-4">TIT</h1>
     <p class="text-lg text-gray-600 dark:text-gray-400">
-      Today I Learned - 매일 배운 것들을 가볍게 기록합니다.
+      Today I Thought - 매일 생각한 것들을 가볍게 기록합니다.
     </p>
   </section>
 
@@ -57,32 +57,32 @@ const tilsByMonth = tils.reduce((acc, til) => {
     </div>
   )}
 
-  {Object.keys(tilsByMonth).length === 0 ? (
-    <p class="text-gray-500 dark:text-gray-400">아직 TIL이 없습니다.</p>
+  {Object.keys(titsByMonth).length === 0 ? (
+    <p class="text-gray-500 dark:text-gray-400">아직 TIT이 없습니다.</p>
   ) : (
-    <div class="space-y-8" id="til-list">
-      {Object.entries(tilsByMonth).map(([month, items]) => (
-        <section class="til-month-group">
+    <div class="space-y-8" id="tit-list">
+      {Object.entries(titsByMonth).map(([month, items]) => (
+        <section class="tit-month-group">
           <h2 class="text-lg font-semibold text-gray-500 dark:text-gray-400 mb-4">{month}</h2>
           <ul class="space-y-3">
-            {items.map((til) => (
-              <li data-tags={til.data.tags.join(',')}>
+            {items.map((tit) => (
+              <li data-tags={tit.data.tags.join(',')}>
                 <a
-                  href={`${base}/til/${til.slug}`}
+                  href={`${base}/tit/${tit.slug}`}
                   class="group flex items-baseline gap-4 hover:no-underline"
                 >
                   <time
                     class="text-sm text-gray-400 dark:text-gray-500 shrink-0"
-                    datetime={til.data.date.toISOString()}
+                    datetime={tit.data.date.toISOString()}
                   >
-                    {til.data.date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' })}
+                    {tit.data.date.toLocaleDateString('ko-KR', { month: '2-digit', day: '2-digit' })}
                   </time>
                   <span class="text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
-                    {til.data.title}
+                    {tit.data.title}
                   </span>
-                  {til.data.tags.length > 0 && (
+                  {tit.data.tags.length > 0 && (
                     <span class="flex gap-1 shrink-0">
-                      {til.data.tags.map((tag) => (
+                      {tit.data.tags.map((tag) => (
                         <span class="px-1.5 py-0.5 bg-gray-100 dark:bg-gray-800 rounded text-[10px] text-gray-500 dark:text-gray-500">
                           {tag}
                         </span>
@@ -101,8 +101,8 @@ const tilsByMonth = tils.reduce((acc, til) => {
 
 <script>
   const buttons = document.querySelectorAll<HTMLButtonElement>('.tag-btn');
-  const items = document.querySelectorAll<HTMLLIElement>('#til-list li[data-tags]');
-  const groups = document.querySelectorAll<HTMLElement>('.til-month-group');
+  const items = document.querySelectorAll<HTMLLIElement>('#tit-list li[data-tags]');
+  const groups = document.querySelectorAll<HTMLElement>('.tit-month-group');
 
   const activeClass = ['bg-primary-100', 'dark:bg-primary-900', 'text-primary-700', 'dark:text-primary-300'];
   const inactiveClass = ['bg-gray-100', 'dark:bg-gray-800', 'text-gray-600', 'dark:text-gray-400'];
