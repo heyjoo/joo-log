@@ -1,5 +1,6 @@
 ---
 import type { CollectionEntry } from 'astro:content';
+import { getExcerpt } from '@/utils/excerpt';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 
@@ -9,6 +10,7 @@ interface Props {
 
 const { post } = Astro.props;
 const { title, description, date, tags } = post.data;
+const summary = description ?? getExcerpt(post.body);
 
 const formattedDate = date.toLocaleDateString('ko-KR', {
   year: 'numeric',
@@ -26,9 +28,9 @@ const formattedDate = date.toLocaleDateString('ko-KR', {
       <h2 class="text-xl font-semibold mt-2 mb-2 text-gray-900 dark:text-white group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors">
         {title}
       </h2>
-      {description && (
+      {summary && (
         <p class="text-gray-600 dark:text-gray-400 line-clamp-2">
-          {description}
+          {summary}
         </p>
       )}
       {tags.length > 0 && (
