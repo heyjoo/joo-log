@@ -66,7 +66,7 @@ draft: false
 - 상대방의 표현 속에 들어 있는 '진짜 목적'을 파악하는 능력
 - 그 사람이 무엇을 하고 싶은지, 혹은 무엇을 하고 싶지 않은지 파악할 수 있어야 한다. 모든 상황에서 사람들이 자신의 목적을 솔직하게 드러내지는 않는다. (그럴 수 없는 상황도 많다.)
 - 예: "이 기능 이번 스프린트에 되나요?"라는 질문의 진짜 목적이 "다음 주 데모에서 보여줄 것이 필요하다"일 수 있다.
-- 겉으로 드러난 요구와 그 밑의 목적을 구분하는 것은 협상 이론의 입장(position)과 이해관계(interest) 구분과 같은 결이다. (Fisher & Ury, _Getting to Yes_)
+- 겉으로 드러난 요구와 그 밑의 목적을 구분하는 것은 협상 이론의 입장(position)과 이해관계(interest) 구분과 같은 결이다. ([Yes를 이끌어내는 협상법](https://www.aladin.co.kr/shop/wproduct.aspx?ItemId=423485&srsltid=AYCX9vJsH8JCfEgrmJERYBEowGGUmSJ1FqboPmDOuBwqCmId-BxQFY_S))
 
 > 셀프 체크포인트: 요청받은 일뿐 아니라, 상대방이 그 일을 요청한 이유를 설명할 수 있는가?
 
