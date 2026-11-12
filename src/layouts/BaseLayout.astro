@@ -8,9 +8,16 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 interface Props {
   title: string;
   description?: string;
+  type?: 'website' | 'article';
 }
 
-const { title, description = 'joo-log - 개인 기술 블로그' } = Astro.props;
+const {
+  title,
+  description = 'joo-log - 개인 기술 블로그',
+  type = 'website',
+} = Astro.props;
+
+const canonicalUrl = new URL(Astro.url.pathname, Astro.site).href;
 ---
 
 <!doctype html>
@@ -19,6 +26,16 @@ const { title, description = 'joo-log - 개인 기술 블로그' } = Astro.props
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+    <meta property="og:type" content={type} />
+    <meta property="og:site_name" content="joo-log" />
+    <meta property="og:locale" content="ko_KR" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
     <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
     <title>{title} | joo-log</title>
     <script is:inline>
